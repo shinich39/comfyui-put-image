@@ -12,9 +12,6 @@ Add node > image > Put Image
 
 ## Usage
 
-### Put Image node  
-Enter dir_path and index to load image.  
-
 ### Controls \(while focus on the node\)  
 Arrow left, right: Change index.  
 F5 or Ctrl + r: Reload images.  
@@ -31,7 +28,7 @@ Ctrl or Alt + Mouse L/R click: Change brush color to selected pixel.
 Mouse left click: Drawing.  
 Mouse right click: Remove drawing.  
 
-### Added menu to Save Image and Preview Image  
+### Add menu items to Save Image and Preview Image  
 - Send to input  
 
 Copy selected image to "/ComfyUI/input" directory.  
