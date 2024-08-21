@@ -21,6 +21,8 @@ from PIL import ImageFile, Image, ImageOps
 # fix
 ImageFile.LOAD_TRUNCATED_IMAGES = True
 
+IMAGE_EXTENSIONS = (".png", ".jpg", ".jpeg", ".webp")
+
 def chk_dir(p):
   if os.path.exists(p) == False:
     os.makedirs(p, exist_ok=True)
@@ -37,7 +39,7 @@ def get_images(dir_path):
   if os.path.isdir(dir_path):
     for file in os.listdir(dir_path):  
       # not image
-      if not file.endswith(".png"):
+      if not file.endswith(IMAGE_EXTENSIONS):
         continue
 
       # mask, draw, result
