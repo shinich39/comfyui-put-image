@@ -19,7 +19,7 @@ import {
 
 const NODE_TYPE = "PutImage";
 
-function initLoadImageNode() {
+function initPutImageNode() {
   try {
     const self = this;
 
@@ -560,7 +560,7 @@ app.registerExtension({
     for (const node of app.graph._nodes) {
       if (node.comfyClass === NODE_TYPE) {
         if (!node.statics || !node.statics.isInitialized) {
-          initLoadImageNode.apply(node);
+          initPutImageNode.apply(node);
         }
 
         node.statics.resetCounter();
@@ -581,7 +581,7 @@ app.registerExtension({
   nodeCreated(node) {
     if (node.comfyClass === NODE_TYPE) {
       if (!node.statics || !node.statics.isInitialized) {
-        initLoadImageNode.apply(node);
+        initPutImageNode.apply(node);
       }
 
       // workflow initialized
