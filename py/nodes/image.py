@@ -17,15 +17,9 @@ from server import PromptServer
 from aiohttp import web
 
 from PIL import ImageFile, Image, ImageOps
-from PIL.PngImagePlugin import PngInfo, PngImageFile
 
 # fix
 ImageFile.LOAD_TRUNCATED_IMAGES = True
-
-# __DIRNAME = os.path.dirname(inspect.getfile(PromptServer))
-# CACHE_DIR = os.path.abspath(os.path.join(__DIRNAME, "shinich39_images"))
-MAX_RESOLUTION = 16384
-VALID_EXTENSIONS = [".png"]
 
 def chk_dir(p):
   if os.path.exists(p) == False:
