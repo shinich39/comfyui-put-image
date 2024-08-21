@@ -12,20 +12,7 @@ Add node > image > Put Image
 
 ## Usage
 
-### Added menu to Save Image and Preview Image  
-- Send to input  
-
-Copy selected image to "/ComfyUI/input" directory.  
-
-- Send to output  
-
-Copy selected image to "/ComfyUI/output" directory.  
-
-- Send to Put Image  
-
-Load selected image at the sepecific "Put Image" node.  
-
-### Load image with CMD  
+### Put Image node  
 Enter dir_path and index to load image.  
 
 ### Controls \(while focus on the node\)  
@@ -43,6 +30,19 @@ Mouse right click: Remove mask.
 Ctrl or Alt + Mouse L/R click: Change brush color to selected pixel.  
 Mouse left click: Drawing.  
 Mouse right click: Remove drawing.  
+
+### Added menu to Save Image and Preview Image  
+- Send to input  
+
+Copy selected image to "/ComfyUI/input" directory.  
+
+- Send to output  
+
+Copy selected image to "/ComfyUI/output" directory.  
+
+- Send to Put Image  
+
+Load selected image at the sepecific "Put Image" node.  
 
 ## References  
 
