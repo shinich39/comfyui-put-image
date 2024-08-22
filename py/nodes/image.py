@@ -55,10 +55,11 @@ def get_images(dir_path):
 
       is_draw_exists = os.path.exists(draw_path)
       is_mask_exists = os.path.exists(mask_path)
+      
       image_list.append({
         "dir_path": dir_path,
         "original_path": image_path,
-        "original_name": image_name,
+        "original_name": file,
         "draw_path": draw_path if is_draw_exists else None,
         "draw_name": draw_name if is_draw_exists else None,
         "mask_path": mask_path if is_mask_exists else None,
@@ -194,7 +195,7 @@ class PutImage():
   # prevent starting cached queue
   @classmethod
   def IS_CHANGED(s):
-    return None
+    return float("NaN")
 
   @classmethod
   def INPUT_TYPES(cls):
@@ -213,8 +214,8 @@ class PutImage():
   RETURN_NAMES = ("IMAGE", "MASK", "FILENAME",)
 
   def exec(self, dir_path, index, mode, filename, **kwargs):
-    orig_name = filename
-    orig_path = os.path.join(dir_path, orig_name + ".png")
+    orig_name, orig_ext = os.path.splitext(filename)
+    orig_path = os.path.join(dir_path, filename)
     res_name = "." + orig_name + "_r"
     res_path = os.path.join(dir_path, res_name + ".png")
     is_res_exists = os.path.exists(res_path)
@@ -236,4 +237,4 @@ class PutImage():
     else:
       mask = torch.zeros((64, 64), dtype=torch.float32, device="cpu")
 
-    return (image, mask.unsqueeze(0), filename,)
+    return (image, mask.unsqueeze(0), orig_name,)
