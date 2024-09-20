@@ -194,7 +194,7 @@ class PutImage():
 
   # prevent starting cached queue
   @classmethod
-  def IS_CHANGED(s):
+  def IS_CHANGED(self, **kwargs):
     return float("NaN")
 
   @classmethod
