@@ -566,7 +566,11 @@ app.registerExtension({
         await node.statics.loadImages();
         // node.statics.updateIndex(node.statics.getIndex());
         node.statics.clearImage();
-        node.statics.selectImage();
+        try {
+          node.statics.selectImage();
+        } catch(err) {
+          console.error(err);
+        }
         node.statics.renderImage();
 
         node.statics.DIR_PATH.isCallbackEnabled = true;
@@ -588,7 +592,11 @@ app.registerExtension({
           await node.statics.loadImages();
           // node.statics.updateIndex(node.statics.getIndex());
           node.statics.clearImage();
-          node.statics.selectImage();
+          try {
+            node.statics.selectImage();
+          } catch(err) {
+            console.error(err);
+          }
           node.statics.renderImage();
 
           node.statics.DIR_PATH.isCallbackEnabled = true;
