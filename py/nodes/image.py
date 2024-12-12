@@ -39,7 +39,7 @@ def get_images(dir_path):
   if os.path.isdir(dir_path):
     for file in os.listdir(dir_path):  
       # not image
-      if not file.endswith(IMAGE_EXTENSIONS):
+      if not file.lower().endswith(IMAGE_EXTENSIONS):
         continue
 
       # mask, draw, result
