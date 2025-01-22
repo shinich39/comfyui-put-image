@@ -11,10 +11,6 @@ import {
   parseURL,
   parseObjectURL,
   getPathFromURL,
-  getRandomSeed,
-  cancelGeneration,
-  isAutoQueueMode,
-  unsetAutoQueue,
 } from "./libs/comfy-utils.js";
 
 const NODE_TYPE = "PutImage";
@@ -374,20 +370,6 @@ function initNode() {
   }
 }
 
-// images store when preview node out of screen
-function fixPreviewImages({ detail }) {
-  // Filter the nodes that have the preview element.
-  if (!detail?.output?.images) {
-    return;
-  }
-  
-  const imagePaths = detail.output.images.map(e => parseObjectURL(e).filePath);
-  const node = app.graph._nodes?.find(e => e.id == detail.node);
-  if (node) {
-    node.imagePaths = imagePaths;
-  }
-}
-
 async function loadImages(dirPath) {
   const response = await api.fetchApi(`/shinich39/put-image/load-images`, {
     method: "POST",
@@ -404,40 +386,74 @@ async function loadImages(dirPath) {
   return data;
 }
 
-// api.addEventListener("promptQueued", () => {});
-api.addEventListener("executed", fixPreviewImages);
+// Change image after prompt queued
+;(() => {
+  api.addEventListener("promptQueued", function() {
+    for (const node of app.graph._nodes) {
+      if (node.type === NODE_TYPE) {
+        const prevIndex = node.statics.getIndex();
+        node.statics.updateIndex();
+        node.statics.updateCounter();
+        const currIndex = node.statics.getIndex();
+        // Prevent thumbnail loading when same image selected
+        if (prevIndex !== currIndex) {
+          node.statics.clearImage();
+          node.statics.selectImage();
+          node.statics.renderImage();
+        }
+      }
+    }
+  });
+
+  console.log("[compfyui-put-image] Event added.");
+})();
+
+// images store when preview node out of screen
+api.addEventListener("executed", function({ detail }) {
+  // Filter the nodes that have the preview element.
+  if (!detail?.output?.images) {
+    return;
+  }
+  
+  const imagePaths = detail.output.images.map(e => parseObjectURL(e).filePath);
+  const node = app.graph._nodes?.find(e => e.id == detail.node);
+  if (node) {
+    node.imagePaths = imagePaths;
+  }
+});
 
 app.registerExtension({
 	name: `shinich39.${NODE_TYPE}`,
   setup() {
 
+    // Deprecated: Move to promptQueued
     // render before start a new queue
-    const origQueuePrompt = app.queuePrompt;
-    app.queuePrompt = async function(number, batchCount) {
+    // const origQueuePrompt = app.queuePrompt;
+    // app.queuePrompt = async function(number, batchCount) {
 
-      // end of queue
-      for (const node of app.graph._nodes) {
-        if (node.type === NODE_TYPE) {
-          const isFirstQueue = node.statics.countQueues === 0;
-          if (isFirstQueue) {
-            node.statics.updateCounter();
-          } else {
-            const prevIndex = node.statics.getIndex();
-            node.statics.updateIndex();
-            node.statics.updateCounter();
-            const currIndex = node.statics.getIndex();
-            if (prevIndex !== currIndex) {
-              node.statics.clearImage();
-              node.statics.selectImage();
-              node.statics.renderImage();
-            }
-          }
-        }
-      }
+    //   // end of queue
+    //   for (const node of app.graph._nodes) {
+    //     if (node.type === NODE_TYPE) {
+    //       const isFirstQueue = node.statics.countQueues === 0;
+    //       if (isFirstQueue) {
+    //         node.statics.updateCounter();
+    //       } else {
+    //         const prevIndex = node.statics.getIndex();
+    //         node.statics.updateIndex();
+    //         node.statics.updateCounter();
+    //         const currIndex = node.statics.getIndex();
+    //         if (prevIndex !== currIndex) {
+    //           node.statics.clearImage();
+    //           node.statics.selectImage();
+    //           node.statics.renderImage();
+    //         }
+    //       }
+    //     }
+    //   }
 
-      const r = await origQueuePrompt.apply(this, arguments);
-      return r;
-    }
+    //   const r = await origQueuePrompt.apply(this, arguments);
+    //   return r;
+    // }
   },
   async beforeRegisterNodeDef(nodeType, nodeData, app) {
     
