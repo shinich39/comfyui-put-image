@@ -1,6 +1,7 @@
 # ComfyUI Registry
 
 node.zip
+.ruff_cache/
 
 # custom
 
