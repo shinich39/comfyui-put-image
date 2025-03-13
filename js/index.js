@@ -350,13 +350,13 @@ function initNode() {
       if (this.timer) {
         clearTimeout(this.timer);
       }
+      self.statics.resetCounter();
+      self.statics.updateIndex(self.statics.getIndex());
+      self.statics.clearImage();
+      self.statics.selectImage();
+      selectNode(self);
       this.timer = setTimeout(async () => {
-        self.statics.resetCounter();
-        self.statics.updateIndex(self.statics.getIndex());
-        self.statics.clearImage();
-        self.statics.selectImage();
         self.statics.renderImage();
-        selectNode(self);
       }, 128);
     }
 
