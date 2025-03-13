@@ -1,6 +1,6 @@
 {
   "name": "comfyui-put-image",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Load image from directory.",
   "type": "module",
   "main": "index.js",
