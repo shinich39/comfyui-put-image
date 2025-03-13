@@ -2,7 +2,7 @@
 @author: shinich39
 @title: put-image
 @nickname: put-image
-@version: 1.0.0
+@version: 1.0.1
 @description: Load image from directory.
 """
 
