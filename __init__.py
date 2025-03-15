@@ -1,8 +1,8 @@
 """
 @author: shinich39
-@title: put-image
-@nickname: put-image
-@version: 1.0.1
+@title: comfyui-put-image
+@nickname: comfyui-put-image
+@version: 1.0.2
 @description: Load image from directory.
 """
 

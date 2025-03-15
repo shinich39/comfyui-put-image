@@ -405,7 +405,7 @@ async function loadImages(dirPath) {
     }
   });
 
-  console.log("[compfyui-put-image] Event added.");
+  console.log("[comfyui-put-image] Event added.");
 })();
 
 // images store when preview node out of screen
@@ -456,8 +456,11 @@ app.registerExtension({
     // }
   },
   async beforeRegisterNodeDef(nodeType, nodeData, app) {
-    
-    function isNodeExists() {
+    if ((nodeType.comfyClass || nodeData.name) !== "PreviewImage") {
+      return;
+    }
+
+    const isNodeExists = function() {
       for (const node of app.graph._nodes) {
         if (node.type === NODE_TYPE) {
           return true;
@@ -466,7 +469,7 @@ app.registerExtension({
       return false;
     }
 
-    function getNodes() {
+    const getNodes = function() {
       let nodes = [];
       for (const node of app.graph._nodes) {
         if (node.type === NODE_TYPE) {
@@ -476,7 +479,7 @@ app.registerExtension({
       return nodes;
     }
 
-    async function saveImage(filePath, dirname) {
+    const saveImage = async function(filePath, dirname) {
       const response = await api.fetchApi(`/shinich39/put-image/save-image`, {
         method: "POST",
         headers: { "Content-Type": "application/json", },
@@ -490,7 +493,7 @@ app.registerExtension({
       return true;
     }
 
-    async function sendToDir(dirname) {
+    const sendToDir = async function(dirname) {
       if (this.imgs) {
         // If this node has images then we add an open in new tab item
         let img;
@@ -509,7 +512,7 @@ app.registerExtension({
       }
     }
     
-    async function sendToNode(node) {
+    const sendToNode = async function (node) {
       if (this.imgs) {
         // If this node has images then we add an open in new tab item
         let img;
@@ -533,41 +536,47 @@ app.registerExtension({
 		const origGetExtraMenuOptions = nodeType.prototype.getExtraMenuOptions;
 		nodeType.prototype.getExtraMenuOptions = function (_, options) {
 			const r = origGetExtraMenuOptions ? origGetExtraMenuOptions.apply(this, arguments) : undefined;
-			let optionIndex = options.findIndex((o) => o?.content === "Save Image");
-      if (optionIndex > -1) {
-        let newOptions = [
-          {
-            content: "Send to input",
-            callback: () => {
-              sendToDir.apply(this, ["input"]);
-            },
-          }, {
-            content: "Send to output",
-            callback: () => {
-              sendToDir.apply(this, ["output"]);
-            },
-          }, {
-            content: "Send to Put Image",
-            disabled: !isNodeExists(),
-            submenu: {
-              options: getNodes().map((node) => {
-                return {
-                  content: `#${node.id}`,
-                  callback: () => {
-                    sendToNode.apply(this, [node]);
-                  },
-                }
-              }),
-            },
-          }, 
-        ];
-        
-        options.splice(
-          optionIndex + 1,
-          0,
-          ...newOptions
-        );
+
+			let optionIndex = options.findIndex((o) => o?.content === "Inputs");
+      if (optionIndex < 0) {
+        optionIndex = 0;
       }
+
+      let newOptions = [
+        {
+          content: "Send to input",
+          disabled: !this.imgs,
+          callback: () => {
+            sendToDir.apply(this, ["input"]);
+          },
+        }, {
+          content: "Send to output",
+          disabled: !this.imgs,
+          callback: () => {
+            sendToDir.apply(this, ["output"]);
+          },
+        }, {
+          content: "Send to Put Image",
+          disabled: !this.imgs || !isNodeExists(),
+          submenu: {
+            options: getNodes().map((node) => {
+              return {
+                content: `#${node.id}`,
+                callback: () => {
+                  sendToNode.apply(this, [node]);
+                },
+              }
+            }),
+          },
+        }, 
+      ];
+      
+      options.splice(
+        optionIndex,
+        0,
+        ...newOptions
+      );
+
       return r;
 		};
 
