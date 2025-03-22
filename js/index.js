@@ -2,18 +2,20 @@
 
 import { app } from "../../scripts/app.js";
 import { api } from "../../scripts/api.js";
-import { initMaskEditor } from "./libs/mask-editor.js";
-import { random } from "./libs/util.min.js";
+import { initMaskEditor } from "./libs/editor.js";
 import {
   getImageURL,
-  renderCanvas,
   selectNode,
   parseURL,
   parseObjectURL,
   getPathFromURL,
-} from "./libs/comfy-utils.js";
+} from "./libs/utils.js";
 
 const NODE_TYPE = "PutImage";
+
+function random(min, max) {
+  return Math.random() * (max - min) + min;
+}
 
 function initNode() {
   try {

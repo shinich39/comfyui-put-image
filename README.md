@@ -41,6 +41,6 @@ Copy selected image to "/ComfyUI/output" directory.
 
 Load selected image at the sepecific "Put Image" node.  
 
-## References  
+## Acknowledgements  
 
 Thanks for ComfyUI core nodes!

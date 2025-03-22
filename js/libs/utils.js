@@ -6,10 +6,6 @@ function getImageURL(filePath) {
   return `/shinich39/put-image/image?path=${encodeURIComponent(filePath)}&rand=${Date.now()}`;
 }
 
-function renderCanvas() {
-  app.canvas.draw(true, true);
-}
-
 function selectNode(node) {
   app.canvas.deselectAllNodes();
   app.canvas.selectNode(node);
@@ -63,7 +59,6 @@ function parseURL(url) {
 
 export {
   getImageURL,
-  renderCanvas,
   selectNode,
   parseObjectURL,
   getPathFromURL,

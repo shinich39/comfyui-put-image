@@ -2,8 +2,7 @@
 
 import { app } from "../../../scripts/app.js";
 import { api } from "../../../scripts/api.js";
-import { ComfyWidgets } from "../../../scripts/widgets.js";
-import { selectNode } from "./comfy-utils.js";
+import { selectNode } from "./utils.js";
 
 const DEFAULT_DRAW_COLOR = "rgb(0,0,0)";
 const DEFAULT_MASK_RGB = [0,0,0];
